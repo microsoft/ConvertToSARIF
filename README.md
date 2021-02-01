@@ -4,6 +4,9 @@
 
 This is a simple utility PSCmdlet used to convert the output of the [PSScriptAnalyzer](https://github.com/PowerShell/Psscriptanalyzer) to the SARIF format using pipelines.
 
+## Download
+The tool is available for download from the PowerShell Gallery [here](https://www.powershellgallery.com/packages/ConvertToSARIF/1.0.0).
+
 ## Getting Started
 To run the program you have to call the `Invoke-ScriptAnalyzer` and then pipeline it to the `ConvertTo-SARIF`:
 
