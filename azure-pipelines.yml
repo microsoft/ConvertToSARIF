@@ -1,0 +1,58 @@
+pool:
+  vmImage: 'windows-latest'
+name: ConvertTo-SARIF Produce Signed
+trigger: none
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(Build.SourcesDirectory)/src/ConvertToSARIF/ConvertToSARIF.csproj'
+    zipAfterPublish: false
+    modifyOutputPath: false
+    arguments: -o $(Build.ArtifactStagingDirectory)/ConvertToSARIF
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'ConvertToSARIF-ESRP'
+    FolderPath: '$(Build.ArtifactStagingDirectory)/ConvertToSARIF'
+    Pattern: '*.dll,*.psd1'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [
+        {
+          "keyCode": "CP-230012",
+          "operationSetCode": "SigntoolSign",
+          "parameters": [
+            {
+              "parameterName": "OpusName",
+              "parameterValue": "Microsoft"
+            },
+            {
+              "parameterName": "OpusInfo",
+              "parameterValue": "http://www.microsoft.com"
+            },
+            {
+              "parameterName": "PageHash",
+              "parameterValue": "/NPH"
+            },
+            {
+              "parameterName": "FileDigest",
+              "parameterValue": "/fd sha256"
+            },
+            {
+              "parameterName": "TimeStamp",
+              "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+            }
+          ],
+          "toolName": "signtool.exe",
+          "toolVersion": "6.2.9304.0"
+        }
+      ]
+    SessionTimeout: '60'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '5'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'Signed Artifacts'
+    publishLocation: 'pipeline'

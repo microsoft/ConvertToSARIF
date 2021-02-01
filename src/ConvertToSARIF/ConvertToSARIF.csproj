@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>ConvertToSARIF</RootNamespace>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <None Remove="ConvertToSARIF.psd1" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Content Include="ConvertToSARIF.psd1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConvertToSARIF.Engine\ConvertToSARIF.Engine.csproj" />
+  </ItemGroup>
+
+</Project>

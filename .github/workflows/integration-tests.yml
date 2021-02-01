@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  CI:
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          path: src/
+          
+      - uses: actions/checkout@v2
+        with:
+          path: repo/
+          ref: main
+          repository: actions/virtual-environments
+      
+        # Runs a single command using the runners shell
+      - name: Publish the project
+        run: dotnet publish src/src/ConvertToSARIF/ConvertToSARIF.csproj -o module
+        
+      - name: Import module
+        shell: pwsh
+        run: | 
+          Import-Module -Name ${{github.workspace}}/module/ConvertToSARIF.dll
+          Install-Module -Name PSScriptAnalyzer -Force
+          Invoke-ScriptAnalyzer .\repo\ -Recurse | ConvertTo-SARIF -FilePath results.sarif
+
+      - name: Upload sarif result
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: results-${{ matrix.os }}.sarif
+          path: results.sarif
