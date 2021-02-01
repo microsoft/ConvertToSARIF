@@ -1,4 +1,4 @@
-# ConvertTo-SARIF
+# ConvertToSARIF
 
 ![Unit Tests](https://github.com/microsoft/ConvertTo-SARIF/workflows/Unit%20Tests/badge.svg?event=push)  ![CI](https://github.com/microsoft/ConvertTo-SARIF/workflows/CI/badge.svg?event=push)
 
