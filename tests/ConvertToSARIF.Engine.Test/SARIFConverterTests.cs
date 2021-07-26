@@ -448,7 +448,8 @@ namespace ConvertToSARIF.Engine.Test
                             }
                         }
                     }
-                }
+                },
+                Suppressions = new List<Suppression>()
             };
 
             var results = new List<Result>();

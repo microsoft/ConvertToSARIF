@@ -148,8 +148,24 @@ namespace ConvertToSARIF.Engine
                         }
                     }
                 },
-                RuleId = diagnosticRecord.RuleName
+                RuleId = diagnosticRecord.RuleName,
+                Suppressions = new List<Suppression>()
             };
+
+            if (diagnosticRecord.Suppression != null)
+            {
+                foreach (RuleSuppression suppression in diagnosticRecord.Suppression)
+                {
+                    result.Suppressions.Add
+                    (
+                         new Suppression()
+                         {
+                             Kind = suppression.Kind,
+                             Justification = suppression.Justification
+                         }
+                     );
+                }
+            }
 
             results.Add(result);
         }
