@@ -420,7 +420,18 @@ namespace ConvertToSARIF.Engine.Test
                 Message = "Dont use Write-Host",
                 RuleName = "Write-Host",
                 ScriptPath = "C:\\users\\johnsmith",
-                Severity = "Warning"
+                Severity = "Warning",
+                Suppressions=new List<Suppression>()
+                { 
+                    new Suppression()
+                    {
+                        Justification="suppress write-host1"
+                    },
+                    new Suppression()
+                    {
+                        Justification="suppress write-host2"
+                    }
+                }
             };
 
             var expectedResult = new Result()
@@ -450,6 +461,16 @@ namespace ConvertToSARIF.Engine.Test
                     }
                 },
                 Suppressions = new List<Suppression>()
+                {
+                    new Suppression()
+                    {
+                        Justification="suppress write-host1"
+                    },
+                    new Suppression()
+                    {
+                        Justification="suppress write-host2"
+                    }
+                }
             };
 
             var results = new List<Result>();
