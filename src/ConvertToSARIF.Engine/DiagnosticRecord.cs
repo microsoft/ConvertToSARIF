@@ -1,5 +1,5 @@
-﻿using Microsoft.CodeAnalysis.Sarif;
-using System;
+﻿using System;
+using Microsoft.CodeAnalysis.Sarif;
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Text;
@@ -18,23 +18,23 @@ namespace ConvertToSARIF.Engine
 
         public string Message { get; set; }
 
-        public IList<RuleSuppression> Suppression
+        public IList<Suppression> Suppressions
         {
             get
             {
-                if (suppression == null)
+                if (suppressions == null)
                 {
-                    suppression = new List<RuleSuppression>();
+                    suppressions = new List<Suppression>();
                 }
 
-                return suppression;
+                return suppressions;
             }
             set
             {
-                suppression = value;
+                suppressions = value;
             }
         }
-        private IList<RuleSuppression> suppression;
+        private IList<Suppression> suppressions;
 
         public DiagnosticRecord(PSObject inputObject)
         {
@@ -57,18 +57,13 @@ namespace ConvertToSARIF.Engine
             {
                 foreach (dynamic suppression in SuppressionList)
                 {
-                    RuleSuppression ruleSuppression =
-                        new RuleSuppression(suppression.RuleName,
-                        suppression.RuleSuppressionID,
-                        suppression.StartOffset,
-                        suppression.EndOffset,
-                        suppression.StartAttributeLine,
-                        suppression.Justification,
-                        SuppressionKind.InSource);
+                    Suppression suppressions = new Suppression();
+                    suppressions.Justification = suppression.Justification;
+                    suppressions.Kind = SuppressionKind.InSource;
 
-                    if (ruleSuppression != null)
+                    if (suppressions != null)
                     {
-                        Suppression.Add(ruleSuppression);
+                        Suppressions.Add(suppressions);
                     }
                 }
             }

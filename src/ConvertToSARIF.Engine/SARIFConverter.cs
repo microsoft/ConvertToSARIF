@@ -152,9 +152,9 @@ namespace ConvertToSARIF.Engine
                 Suppressions = new List<Suppression>()
             };
 
-            if (diagnosticRecord.Suppression != null)
+            if (diagnosticRecord.Suppressions != null)
             {
-                foreach (RuleSuppression suppression in diagnosticRecord.Suppression)
+                foreach (Suppression suppression in diagnosticRecord.Suppressions)
                 {
                     result.Suppressions.Add
                     (
