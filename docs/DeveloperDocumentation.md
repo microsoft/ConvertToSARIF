@@ -9,7 +9,7 @@ Run `git clone https://github.com/microsoft/ConvertTo-SARIF`
 In order to test the module and have it running you have to publish it using `dotnet publish`. Go to the folder for `ConvertToSARIF.csproj` and publish it.
 
 ## Import the module
-After you have published the module you can immport it from the directory it should be under `bin\Debug\netstandard2.0\publish`. The command to import it is:
+After you have published the module you can import it from the directory it should be under `bin\Debug\netstandard2.0\publish`. The command to import it is:
 
 `Import-Module bin\Debug\netstandard2.0\publish\ConvertToSARIF`
 
